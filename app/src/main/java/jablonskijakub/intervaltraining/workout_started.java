@@ -8,12 +8,13 @@ import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.util.TypedValue;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 public class workout_started extends AppCompatActivity {
     MediaPlayer mp;
-    private CountDownTimer countDownTimer;
+    CountDownTimer countDownTimer;
     int i;
     int warmUpTime=0;
     int restTime=0;
@@ -25,11 +26,12 @@ public class workout_started extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_workout_started);
+        countDownTimer=null;
         mp= MediaPlayer.create(this, R.raw.beep07);
         final ImageView bg=(ImageView)findViewById(R.id.bg);
         final TextView number=(TextView)findViewById(R.id.number);
         bg.setAlpha((float)0.6);
-        CountDownTimer counter = new CountDownTimer(3000, 50) {
+        new CountDownTimer(3000, 50) {
             int textSize=300;
             public void onTick(long millisUntilFinished) {
                 if(millisUntilFinished%1000<50)
@@ -46,7 +48,6 @@ public class workout_started extends AppCompatActivity {
 
                 }
             }
-
             public void onFinish() {
                 Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                 v.vibrate(500);
@@ -68,14 +69,26 @@ public class workout_started extends AppCompatActivity {
                 times[3]=coolDownTime;
                 max=1+roundsNumber*2;
                 goTimer(times,1+roundsNumber*2);
+                activateButtons();
                 this.cancel();
             }
         }.start();
 
 
     }
-
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (countDownTimer!=null)
+            countDownTimer.cancel();
+    }
+    private void activateButtons()
+    {
+        final Button skip=(Button)findViewById(R.id.skip);
+        final Button end=(Button)findViewById(R.id.end);
+        skip.setEnabled(true);
+        end.setEnabled(true);
+    }
     public void onSkip(View v)
     {
         i--;
@@ -93,45 +106,32 @@ public class workout_started extends AppCompatActivity {
         final TextView timerText;
         timerText = (TextView) findViewById(R.id.display);
 
-        if(step==max)
-        {
-            time=times[0];
-        }
-        else if(step==0)
-        {
-            time=times[3];
-        }
-        else if(step%2==1)
-        {
-            time=times[2];
-        }
-        else
-        {
+        if(step%2==0 && step!=max && step!=0) // check if work time
             time=times[1];
-        }
+        else if(step%2==1&& step!=max && step!=0) // check if rest time
+            time=times[2];
+        else if(step==max)// check if it is warmuptime, then set it :D
+            time=times[0];
+        else if(step==0)//cooldown time
+            time=times[3];
         countDownTimer = new CountDownTimer(time * 1000, 1000) {
-
             public void onTick(long millisUntilFinished) {
-                timerText.setText(millisUntilFinished/60000+":"+String.format("%02d", (millisUntilFinished / 1000)%60));
+                timerText.setText(millisUntilFinished/60000+":"+String.format("%02d", (millisUntilFinished / 1000)%60));//best visual effects
                 if(millisUntilFinished/1000<6)
                 {
-                   mp.start();
+                   mp.start();//if it's finish
                 }
             }
 
             public void onFinish() {
                 Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                 v.vibrate(500);
-                if(step-1!=-1)
+                if(step>0)
                 {
-                    goTimer(times, step - 1);
+                    goTimer(times, step - 1); // start next interval
                 }
                 this.cancel();
             }
         }.start();
-
     }
-
-
-
 }

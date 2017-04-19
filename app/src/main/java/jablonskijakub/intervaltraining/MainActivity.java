@@ -27,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
     NumberPicker rounds;
     public void buttonOnClick(View v) {
 
-        //calculate time in seconds
         try
         {
             setTimes(warmUpSeconds.getValue(),warmUpMinutes.getValue(),restSeconds.getValue(),restMinutes.getValue(),coolDownSeconds.getValue(),coolDownMinutes.getValue(),workSeconds.getValue(),workMinutes.getValue(),rounds.getValue());
@@ -55,9 +54,14 @@ public class MainActivity extends AppCompatActivity {
         popUp.putExtra("height",.2);
         startActivity(popUp);
     }
-    public void setTimes(int warmUpSeconds,int warmUpMinutes,int restSeconds,int restMinutes, int coolDownSeconds, int coolDownMinutes,int workSeconds,int workMinutes, int rounds) throws WrongTimeSetEx
+    public void testSetTimes(int warmUpSeconds,int warmUpMinutes,int restSeconds,int restMinutes, int coolDownSeconds, int coolDownMinutes,int workSeconds,int workMinutes, int rounds) throws WrongTimeSetEx
     {
-        warmUpTime = warmUpSeconds;
+        //helping method to unit tests (can't test private methods)
+        setTimes(warmUpSeconds, warmUpMinutes, restSeconds, restMinutes, coolDownSeconds, coolDownMinutes, workSeconds, workMinutes, rounds);
+    }
+    private void setTimes(int warmUpSeconds,int warmUpMinutes,int restSeconds,int restMinutes, int coolDownSeconds, int coolDownMinutes,int workSeconds,int workMinutes, int rounds) throws WrongTimeSetEx
+    {
+        warmUpTime = warmUpSeconds; //calculate times in seconds
         warmUpTime += 60 * warmUpMinutes;
         restTime = restSeconds;
         restTime += 60 * restMinutes;
@@ -78,13 +82,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
-
     public void onAbout(View v) //display info in popup window
     {
         Intent popUp = new Intent(MainActivity.this,Pop.class);
         String text="About:<br>\n" +
-                "Image source - unsplash.com<br>\n" +
+                "Background image source - Unsplash.com<br>\n" +
+                "Logo image source - Webalys.com<br>\n" +
                 "License - Creative Commons Zero<br>\n" +
                 "How to:<br><br>\n\n" +
                 "<b>Warm up</b> - is first interval of the training, leave it as 0:00 to skip it<br>\n" +
@@ -95,10 +98,7 @@ public class MainActivity extends AppCompatActivity {
                 "<b>Contact:Jakub.T.Jablonski@wp.pl</b>";
         popUp.putExtra("text",text);
         startActivity(popUp);
-
     }
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,16 +114,6 @@ public class MainActivity extends AppCompatActivity {
         workSeconds = (NumberPicker) findViewById(R.id.workSeconds);
         workMinutes = (NumberPicker) findViewById(R.id.workMinutes);
         rounds = (NumberPicker) findViewById(R.id.rounds);
-
-        NumberPicker warmUpSeconds = (NumberPicker) findViewById(R.id.warmUpSeconds);
-        final NumberPicker warmUpMinutes = (NumberPicker) findViewById(R.id.warmUpMinutes);
-        final NumberPicker restSeconds = (NumberPicker) findViewById(R.id.restSeconds);
-        final NumberPicker restMinutes = (NumberPicker) findViewById(R.id.restMinutes);
-        final NumberPicker coolDownSeconds = (NumberPicker) findViewById(R.id.coolDownSeconds);
-        final NumberPicker coolDownMinutes = (NumberPicker) findViewById(R.id.coolDownMinutes);
-        final NumberPicker workSeconds = (NumberPicker) findViewById(R.id.workSeconds);
-        final NumberPicker workMinutes = (NumberPicker) findViewById(R.id.workMinutes);
-        final NumberPicker rounds = (NumberPicker) findViewById(R.id.rounds);
 
         warmUpSeconds.setMaxValue(60);
         restSeconds.setMaxValue(60);

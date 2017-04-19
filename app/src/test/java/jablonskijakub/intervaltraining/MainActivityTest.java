@@ -4,6 +4,9 @@ import android.view.View;
 import android.widget.NumberPicker;
 
 import org.junit.Test;
+
+import java.lang.reflect.Method;
+
 import jablonskijakub.intervaltraining.exceptions.WrongTimeSetEx;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
@@ -27,12 +30,12 @@ public class MainActivityTest {
     @Test(expected = WrongTimeSetEx.class)
     public void testIfWrongTimeExceptionIsThrownWhenInputMakesNoSense() throws WrongTimeSetEx {
         MainActivity tested=new MainActivity();
-        tested.setTimes(0,0,0,0,0,0,0,0,0);
+        tested.testSetTimes(0,0,0,0,0,0,0,0,0);
     }
     @Test
     public void testIfTimesInSecondsAreCalculatedCorrectly() {
         MainActivity tested=new MainActivity();
-        tested.setTimes(10,1,20,2,30,3,40,4,5);
+        tested.testSetTimes(10,1,20,2,30,3,40,4,5);
         assertEquals(70,tested.warmUpTime);
         assertEquals(140,tested.restTime);
         assertEquals(210,tested.coolDownTime);

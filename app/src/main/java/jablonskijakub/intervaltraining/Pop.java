@@ -21,18 +21,29 @@ public class Pop extends Activity{
         DisplayMetrics dm=new DisplayMetrics();
         Display display=getWindowManager().getDefaultDisplay();
         display.getMetrics(dm);
-        int width=dm.widthPixels;
-        int height;
+        int width=dm.widthPixels; // get screen width
+        int height=dm.heightPixels;
         String text="";
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            final TextView displayTextView=(TextView)findViewById(R.id.aboutText);
-            text=extras.getString("text", text);
-            displayTextView.setText(Html.fromHtml(text));
+            text= extras.getString("text");
+            displayTextFromExtras(text);
         }
-        DisplayMetrics metrics = getResources().getDisplayMetrics();
-        height=(int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 17*MainActivity.countLines(text)+50, metrics);
+        height=calculateHeight(text,height);
         getWindow().setLayout((width),(height));
 
+    }
+    private int calculateHeight(String text, int screenHeight)
+    {
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+        int neededInTheory=(int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 17*MainActivity.countLines(text)+50, metrics);
+        if (neededInTheory>screenHeight)
+            return screenHeight;
+        return neededInTheory;
+    }
+    private void displayTextFromExtras(String text)
+    {
+        final TextView displayTextView=(TextView)findViewById(R.id.aboutText); //get communicate to display
+        displayTextView.setText(Html.fromHtml(text));
     }
 }

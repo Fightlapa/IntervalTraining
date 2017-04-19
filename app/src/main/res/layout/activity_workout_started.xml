@@ -36,7 +36,8 @@
         android:id="@+id/skip"
         android:layout_marginLeft="50dp"
         android:layout_marginTop="400dp"
-        android:onClick="onSkip" />
+        android:onClick="onSkip"
+        android:enabled="false"/>
 
     <Button
         android:layout_width="wrap_content"
@@ -45,7 +46,8 @@
         android:id="@+id/end"
         android:layout_marginLeft="230dp"
         android:layout_marginTop="400dp"
-        android:onClick="onEnd" />
+        android:onClick="onEnd"
+        android:enabled="false"/>
 
     <ImageView
         android:layout_width="match_parent"

@@ -16,6 +16,6 @@
 
     <dimen name="number_picker_size">60dp</dimen>
     <dimen name="transparent_text_land_margin">20dp</dimen>
-    <dimen name="land_halfscreen">255dp</dimen>
+    <dimen name="land_halfscreen">270dp</dimen>
 
 </resources>
